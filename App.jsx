@@ -1,41 +1,87 @@
-import React from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, FlatList, Image, ScrollView, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import dummyData from "./dummyData.json";
 
 const App = () => {
-  const data = Array.from({ length: 25 }, (_, i) => `Item ${i + 1}`);
+  const [data] = useState(dummyData);
 
   return (
-    <ScrollView style={styles.container}>
-      {data.map((item, index) => (
-        <View key={index} style={styles.item}>
-          <Text style={styles.text}>{item}</Text>
-        </View>
-      ))}
+    <ScrollView nestedScrollEnabled={true}>
+      <View>
+        <Text style={{ margin: 10 }}>I am using FlatList with horizontal</Text>
+        <FlatList
+          style={{ padding: 10 }}
+          horizontal
+          data={data}
+          renderItem={({ item }) => (
+            <View style={styles.listItem}>
+              <Image style={styles.largeImage} source={{ uri: item.image }} />
+              <Text style={styles.nameText}>{item.name}</Text>
+              <Text>{item.email}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      </View>
+
+      <Text style={{ margin: 10 }}>I am using map</Text>
+      <View>
+        {data.map((item) => (
+          <View key={item.id} style={styles.imageContainer}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+          </View>
+        ))}
+      </View>
+
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id.toString()}
+        numColumns={2} // Set number of columns
+        renderItem={({ item }) => (
+          <View style={styles.gridItem}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+          </View>
+        )}
+      />
     </ScrollView>
   );
 };
 
+export default App;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: "#f8f8f8",
-  },
-  item: {
+  listItem: {
     padding: 15,
-    marginVertical: 5,
-    backgroundColor: "#fff",
+    backgroundColor: "grey",
+    margin: 10,
     borderRadius: 5,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 3,
+    alignItems: "center",
   },
-  text: {
-    fontSize: 18,
+  largeImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 150,
+  },
+  nameText: {
+    fontSize: 20,
+    fontStyle: "italic",
     fontWeight: "bold",
   },
+  imageContainer: {
+    padding: 15,
+    backgroundColor: "grey",
+    margin: 10,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 5,
+  },
+  gridItem: {
+    flex: 1,
+    margin: 10,
+    alignItems: "center",
+  },
 });
-
-export default App;
