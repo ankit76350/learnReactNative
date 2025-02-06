@@ -1,57 +1,41 @@
-import { StyleSheet } from 'react-native';
-import React from 'react';
-import Home from './src/screen/Home';
-import Profile from './src/screen/Profile';
-import Search from './src/screen/Search';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Foundation from 'react-native-vector-icons/Foundation';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-
-const Tabn = createBottomTabNavigator();
-
-const TabNavigator = () => {
-  return (
-    <Tabn.Navigator screenOptions={{ headerStyle: { backgroundColor: "blue" } }}>
-      <Tabn.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: () => (
-            <Foundation name="home" size={30} color="red" /> 
-          ),
-        }}
-      />
-      <Tabn.Screen
-        name="Search"
-        component={Search}
-        options={{
-          tabBarIcon: () => (
-            <AntDesign name="search1" size={30} color="black" />
-          ),
-        }}
-      />
-      <Tabn.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarIcon: () => (
-            <AntDesign name="user" size={30} color="green" />
-          ),
-        }}
-      />
-    </Tabn.Navigator>
-  );
-};
+import React from "react";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 
 const App = () => {
+  const data = Array.from({ length: 25 }, (_, i) => `Item ${i + 1}`);
+
   return (
-    <NavigationContainer>
-      <TabNavigator />
-    </NavigationContainer>
+    <ScrollView style={styles.container}>
+      {data.map((item, index) => (
+        <View key={index} style={styles.item}>
+          <Text style={styles.text}>{item}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 };
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: "#f8f8f8",
+  },
+  item: {
+    padding: 15,
+    marginVertical: 5,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+});
 
-const styles = StyleSheet.create({});
+export default App;
