@@ -1,34 +1,35 @@
-import { StyleSheet, ScrollView, View, Text, Image,FlatList } from 'react-native';
-import React from 'react';
-import dummyData from './dummyData.json';
+import { StyleSheet, ScrollView, View, Text,TextInput, Image,FlatList ,Button} from 'react-native';
+import React, { useState } from 'react';
+
 
 
 
 const App = () => {
+  const [textp , setTextP] = useState('')
+  const [data, setData] = useState('')
+
+  const handleSubmit = () => {
+    setData(textp)
+    setTextP()
+
+  } 
   return (
 
     <View style={styles.container}>
-      <FlatList
-        data={dummyData}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <Text >{item.name}</Text>
-            <Text >{item.email}</Text>
-          </View>
-        )}
-
-        keyExtractor={(item) => item.id.toString()}
-        ItemSeparatorComponent={<View style={{height:10}}/>}
-
-        numColumns={3}
-        columnWrapperStyle={{gap:10}}
-        // extraData={}
-        //horizontal
-
+      <Text>I am Text Input </Text>
+      <TextInput
+      placeholder='Enter a text here..'
+      value={textp}
+      onChangeText={(ted)=>setTextP(ted)}
+      multiline
+      numberOfLines={1}
       />
 
+      <Text multiline numberOfLines={1}>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad saepe, accusantium, eveniet placeat nostrum quas quibusdam beatae quam sint quae ex officiis asperiores libero porro nesciunt nemo fugit sapiente facere?</Text>
 
+    <Button title='submit' onPress={handleSubmit}></Button>
+
+    {data && <Text>Result: {data}</Text>}
 
     </View>
   );
