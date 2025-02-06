@@ -42,7 +42,9 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "#dadada",
     paddingVertical: 10,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
+    justifyContent:"center",
+    alignItems:"center"
   },
   card: {
     width: 100,
