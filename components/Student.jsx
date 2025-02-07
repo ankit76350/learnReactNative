@@ -1,15 +1,24 @@
-import React , {Component} from "react";
-import { View ,Text} from "react-native";
+import { View, Text } from 'react-native'
+import React, { useEffect } from 'react'
 
-class Student extends Component{
+const Student = () => {
+   const time =  setInterval(()=>{
+        console.warn("internal called................")
+    },2000)
+    useEffect(()=>{
+        return ()=>{
+            console.log('====================================');
+            console.log("Hello");
+            console.log('====================================');
+            clearInterval(time)
+        }
+    },[])
 
-  render(){
-    return(
-      <View>
-        <Text>Student Class Components: {this.props.name}</Text>
-      </View>
-    )
-  }
+  return (
+    <View>
+      <Text>Student </Text>
+    </View>
+  )
 }
 
 export default Student
