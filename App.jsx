@@ -1,69 +1,46 @@
 import { View, Text, Alert, ActivityIndicator, Button, ScrollView, Modal, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
-  const [loadData, setLoadData] = useState(false);
-  const [search, searchData] = useState('')
 
-
-  const fetchData = async () => {
+  const storeData = async () => {
     try {
-      setLoading(true);
-      const url = `http://10.0.2.2:3000/users?q=${search}`;
-      const response = await fetch(url);
-      const res = await response.json();
-      setData(res);
+      await AsyncStorage.setItem("user", "ANkir");
     } catch (error) {
-      Alert.alert("Error", "Failed to fetch data.");
-    } finally {
-      setLoading(false);
+      console.error("Error storing data", error);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [loadData,search]);
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("user");
+      // if (value !== null) {
+        console.log("value......", value);
+
+        // return value;
+      // }
+    } catch (error) {
+      console.error("Error retrieving data", error);
+    }
+  };
+
+  const removeData = async (key) => {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.error("Error removing data", error);
+    }
+  };
 
 
-
-
-return (
-  <View style={{ flex: 1 }}>
-    <ScrollView style={{ flex: 1 }}>
-      <Text style={{ fontSize: 30, marginBottom: 20 }}>GET API Call</Text>
-      <TextInput style={{ borderRadius:10, borderWidth:2, borderColor:"red"}} onChangeText={(text)=>searchData(text)}/>
-
-
-      <View style={{ flexDirection: "row", flex: 1 ,backgroundColor: "skyblue", padding:10 , margin:1, marginTop:10}}>
-        <Text style={{ fontSize: 20, flex: 1.5 }}>Name</Text>
-        <Text style={{ fontSize: 20, flex: 1 }}>Age</Text>
-        <Text style={{ fontSize: 20, flex: 3 }}>Email</Text>
-      </View>
-
-      {loading ? (
-        <ActivityIndicator size="large" color="blue" />
-      ) : data ? (
-        data.map((item) => (
-          <View
-            key={item.id}
-            style={{ flexDirection: "row", backgroundColor: "gray", padding: 5, margin: 5 }}
-          >
-            <Text style={{ fontSize: 20, flex: 1.5 }}>{item.name}</Text>
-            <Text style={{ fontSize: 20, flex: 1 }}>{item.age}</Text>
-            <Text style={{ fontSize: 20, flex: 3 }}>{item.email}</Text>
-
-          </View>
-        ))
-      ) : (
-        <Text style={{ fontSize: 20, color: "red" }}>No data available.</Text>
-      )}
-    </ScrollView>
-
-  </View>
-);
+  return (
+    <View style={{ flex: 1 }}>
+      <Button onPress={storeData} title="Set Data"/>
+      <Button onPress={getData} title="Get Data"/>
+      <Button onPress={()=>removeData("user")} title="Remove Data"/>
+    </View>
+  );
 };
 
 export default App;
